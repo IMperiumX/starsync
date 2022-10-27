@@ -3,7 +3,6 @@ from timeit import default_timer
 
 import requests
 
-from .constants import *
 from .utils import fetch, read_from_file
 
 
