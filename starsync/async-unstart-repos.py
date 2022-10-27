@@ -4,14 +4,7 @@ from timeit import default_timer
 import requests
 
 from .constants import *
-
-
-def fetch(session, repo):
-    start = default_timer()
-    URL = URL_TEMPLATE.substitute(repo=repo)
-    with session.delete(URL, headers=HEADERS) as response:
-        total = default_timer() - start
-        return f"{response.status_code} {total:.2f} {URL}"
+from .utils import fetch, read_from_file
 
 
 async def unstar_repos_async():
