@@ -17,8 +17,20 @@ def fetch(session, repo):
 async def unstar_repos_async():
     with requests.Session() as session:
         loop = asyncio.get_event_loop()
+
+        # Take each URL in the list
+        # make an async task from it that uses
+        # `fetch` to get the data from the URL
+        # and start the task running in the event loop
+
         repos = read_from_file()
+
         tasks = [loop.run_in_executor(None, fetch, session, repo) for repo in repos]
+
+        # Gather all the tasks from the event loop
+        # once they finish running.
+        # (This command blocks).
+
         for response in await asyncio.gather(*tasks):
             print(response)
 
