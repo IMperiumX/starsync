@@ -18,7 +18,7 @@ e.g: reading from multiple network connections at once because you **spent vast 
 
 use the waiting time **efficently** by **switing** between each read operation to see if it finished yet istead of reading from one internet connection wating it to finishes, moving on the next one wait that to finish and so on and forth
 
-is this example i want to un-start mine repositories with github api
+is this example i want to un-start mine repos with github api
 
 taking that action of listing all availabe repos storing them into file
 
@@ -32,3 +32,11 @@ but with async method  it only took in average about 3sec.
 
 which is 10X faster
 ![](assets/images/Screenshot%202022-10-26%20165043.jpg)
+
+## Explaination
+
+we are not waiting for any of these jobs to finish at a time
+in async version we start them all at once and gather result from them as they come in
+
+the same technique can be applied at any king of file reading or i/o
+where we wait most of out time wating for some king of response.
