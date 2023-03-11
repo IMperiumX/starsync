@@ -2,7 +2,17 @@ from timeit import default_timer
 
 import requests
 
-from .constants import FILE_PATH, HEADERS, STARRED_ENDPONT, URL_TEMPLATE
+from .constants import *
+
+
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = default_timer()
+        func(*args, **kwargs)
+        elapsed = default_timer() - start
+        print(f"Elapsed Time: {elapsed:.2f} seconds")
+
+    return wrapper
 
 
 def write_to_file(repos, schema_attr="full_name"):
@@ -26,13 +36,7 @@ def list_starred_repos():
     return requests.get(STARRED_ENDPONT, headers=HEADERS)
 
 
-def _handle_unstar_repos(repos):
-    for repo in repos:
-        r = requests.delete(URL_TEMPLATE.substitute(repo=repo), headers=HEADERS)
-        print(f">{r.status_code} - {repo}")
-    return "Done"
-
-
+@timer
 def unstar_repo(repo):
     if isinstance(repo, list):
         _handle_unstar_repos(repo)
@@ -41,10 +45,17 @@ def unstar_repo(repo):
     return f">{r.status_code} - {repo}"
 
 
+def _handle_unstar_repos(repos):
+    for repo in repos:
+        r = requests.delete(URL_TEMPLATE.safe_substitute(repo=repo), headers=HEADERS)
+        print(f">{r.status_code} - {repo}")
+    return "Done"
+
+
 # used in  async function
 def fetch(session, repo):
     start = default_timer()
     URL = URL_TEMPLATE.substitute(repo=repo)
-    with session.delete(URL, headers=HEADERS) as response:
-        total = default_timer() - start
-        return f"{response.status_code} {total:.2f} {URL}"
+    response = session.delete(URL, headers=HEADERS)
+    total = default_timer() - start
+    return f"{response.status_code} {total:.2f} {URL}"

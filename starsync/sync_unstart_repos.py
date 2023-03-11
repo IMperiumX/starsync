@@ -1,13 +1,12 @@
 """
 unstart all repos in your github account
 """
-from string import Template
 from timeit import default_timer
 
 from .utils import data_persestance, list_starred_repos, unstar_repo
 
 
-def unstar_repos_async():
+def unstar_repos_sync():
     start = default_timer()
 
     response = list_starred_repos()
@@ -19,7 +18,4 @@ def unstar_repos_async():
 
 
 if __name__ == "__main__":
-    start = default_timer()
-    unstar_repos_async()
-    elapsed = default_timer() - start
-    print(f"Elapsed Time: {elapsed:.2f} seconds")
+    unstar_repos_sync()
